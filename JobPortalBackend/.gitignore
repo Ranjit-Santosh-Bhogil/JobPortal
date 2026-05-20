@@ -3,7 +3,6 @@ target/
 backend-run*.log
 
 # Local secrets and machine-specific backend config
-src/main/resources/application.properties
 src/main/resources/application.properties.example
 
 .mvn/wrapper/maven-wrapper.jar
