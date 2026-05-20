@@ -59,12 +59,14 @@ public class ApplicationService {
         return ApplicationResponse.from(applicationRepository.save(application));
     }
 
+    @Transactional(readOnly = true)
     public Page<ApplicationResponse> getMyApplications(Pageable pageable) {
         UserPrincipal principal = SecurityUtils.getCurrentUser();
         User candidate = getUser(principal.getId());
         return applicationRepository.findByCandidate(candidate, pageable).map(ApplicationResponse::from);
     }
 
+    @Transactional(readOnly = true)
     public Page<ApplicationResponse> getApplicantsByJob(Long jobId, Pageable pageable) {
         UserPrincipal principal = SecurityUtils.getCurrentUser();
         Job job = jobRepository.findById(jobId)
@@ -91,6 +93,7 @@ public class ApplicationService {
         return ApplicationResponse.from(applicationRepository.save(application));
     }
 
+    @Transactional(readOnly = true)
     public Page<ApplicationResponse> getRecentApplicants(Pageable pageable) {
         UserPrincipal principal = SecurityUtils.getCurrentUser();
         User recruiter = getUser(principal.getId());

@@ -29,6 +29,7 @@ public class JobService {
     private final JobRepository jobRepository;
     private final UserRepository userRepository;
 
+    @Transactional(readOnly = true)
     public Page<JobResponse> searchJobs(
             String q,
             String location,
@@ -47,12 +48,14 @@ public class JobService {
         return jobRepository.findAll(spec, pageable).map(JobResponse::from);
     }
 
+    @Transactional(readOnly = true)
     public JobResponse getJob(Long id) {
         Job job = jobRepository.findById(id)
                 .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Job not found"));
         return JobResponse.from(job);
     }
 
+    @Transactional(readOnly = true)
     public Page<JobResponse> getMyJobs(Pageable pageable) {
         UserPrincipal principal = SecurityUtils.getCurrentUser();
         User user = getUser(principal.getId());

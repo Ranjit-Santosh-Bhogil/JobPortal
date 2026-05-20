@@ -12,6 +12,7 @@ import com.ranjit.jobportal.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +22,7 @@ public class RecruiterService {
     private final JobRepository jobRepository;
     private final JobApplicationRepository applicationRepository;
 
+    @Transactional(readOnly = true)
     public StatsResponse getDashboardStats() {
         User recruiter = getCurrentRecruiter();
         long myJobs = jobRepository.findByPostedBy(recruiter, org.springframework.data.domain.Pageable.unpaged())
