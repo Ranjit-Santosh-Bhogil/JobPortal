@@ -17,7 +17,7 @@ export default function Jobs() {
   const { filters, setFilter } = useJobFilters()
   const [searchParams, setSearchParams] = useSearchParams()
   const debouncedQuery = useDebounce(filters.q)
-  const { page, size, totalPages, setPage, resetPage, updateFromResponse, paginationParams } =
+  const { page, totalPages, setPage, resetPage, updateFromResponse, paginationParams } =
     usePagination()
 
   const [jobs, setJobs] = useState([])

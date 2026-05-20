@@ -1,8 +1,8 @@
 export default function AnalyticsCard({ title, value }) {
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 className="text-lg font-semibold text-slate-800">AnalyticsCard</h2>
-      <p className="mt-2 text-sm text-slate-500">Implement UI here.</p>
+      <h2 className="text-sm font-semibold text-slate-500">{title}</h2>
+      <p className="mt-2 text-3xl font-bold text-slate-900">{value}</p>
     </section>
   )
 }

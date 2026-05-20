@@ -25,11 +25,13 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        // Seed predictable demo accounts so the frontend can be tested immediately.
         ensureUser("Admin User", "admin@jobportal.com", "admin123", Role.ADMIN);
         User recruiter = ensureUser("Recruiter Demo", "recruiter@jobportal.com", "recruiter123", Role.RECRUITER);
         ensureUser("Candidate Demo", "candidate@jobportal.com", "candidate123", Role.CANDIDATE);
 
         if (jobRepository.count() == 0) {
+            // Add starter jobs only on an empty database to avoid duplicate sample data.
             jobRepository.save(Job.builder()
                     .title("Senior React Developer")
                     .description("Build modern job portal UIs with React, Vite, and Tailwind CSS.")

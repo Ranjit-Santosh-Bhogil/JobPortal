@@ -1,8 +1,33 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { jobApi } from '@/api/jobApi'
+import PageHeader from '@/components/common/PageHeader'
+import JobForm from '@/components/jobs/JobForm'
+import { ROUTES } from '@/config/routes'
+
 export default function CreateJob() {
+  const navigate = useNavigate()
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState('')
+
+  const handleSubmit = async (payload) => {
+    setIsSubmitting(true)
+    setError('')
+    try {
+      await jobApi.createJob(payload)
+      navigate(ROUTES.RECRUITER.MANAGE_JOBS)
+    } catch (err) {
+      setError(err.message || 'Failed to create job.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 className="text-lg font-semibold text-slate-800">CreateJob</h2>
-      <p className="mt-2 text-sm text-slate-500">Implement UI here.</p>
-    </section>
+    <>
+      <PageHeader title="Post a Job" subtitle="Publish a role for candidates to discover" />
+      {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
+      <JobForm onSubmit={handleSubmit} submitLabel="Publish job" isSubmitting={isSubmitting} />
+    </>
   )
 }

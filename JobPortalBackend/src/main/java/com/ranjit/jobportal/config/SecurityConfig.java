@@ -47,15 +47,27 @@ public class SecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // Authentication endpoints are public because they create or refresh JWTs.
                         .requestMatchers("/auth/login", "/auth/register", "/auth/refresh").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/jobs", "/jobs/**").permitAll()
+
+                        // Put specific job sub-routes before public /jobs matchers so roles are enforced.
+                        .requestMatchers(HttpMethod.POST, "/jobs/*/apply").hasRole("CANDIDATE")
+                        .requestMatchers(HttpMethod.GET, "/jobs/*/applications").hasAnyRole("RECRUITER", "ADMIN")
+                        .requestMatchers("/jobs/my/**", "/jobs/my").hasAnyRole("RECRUITER", "ADMIN")
+
+                        // Public job discovery: candidates and visitors can list jobs and open details.
+                        .requestMatchers(HttpMethod.GET, "/jobs", "/jobs/*").permitAll()
+
+                        // Admin and recruiter dashboards expose private operational data.
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/recruiter/**").hasAnyRole("RECRUITER", "ADMIN")
+
+                        // Only recruiters/admins can create, edit, or delete job postings.
                         .requestMatchers(HttpMethod.POST, "/jobs", "/jobs/**").hasAnyRole("RECRUITER", "ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/jobs/**").hasAnyRole("RECRUITER", "ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/jobs/**").hasAnyRole("RECRUITER", "ADMIN")
-                        .requestMatchers("/jobs/my/**", "/jobs/my").hasAnyRole("RECRUITER", "ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/jobs/*/apply").hasRole("CANDIDATE")
+
+                        // Application records require a logged-in user; services enforce ownership.
                         .requestMatchers("/applications/**").authenticated()
                         .anyRequest().authenticated()
                 )
@@ -68,6 +80,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
+        // Allows the Vite frontend to call the API during local development.
         configuration.setAllowedOrigins(Arrays.asList(allowedOrigins.split(",")));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));

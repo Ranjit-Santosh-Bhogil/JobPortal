@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class JobController {
 
+    // Public job discovery plus recruiter-owned job management.
     private final JobService jobService;
 
     @GetMapping

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthController {
 
+    // Handles login, registration, JWT refresh, logout, and the current user profile.
     private final AuthService authService;
 
     @PostMapping("/register")

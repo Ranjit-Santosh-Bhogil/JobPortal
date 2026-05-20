@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class RecruiterController {
 
+    // Recruiter dashboard summaries and recent applicant feeds.
     private final RecruiterService recruiterService;
     private final ApplicationService applicationService;
 

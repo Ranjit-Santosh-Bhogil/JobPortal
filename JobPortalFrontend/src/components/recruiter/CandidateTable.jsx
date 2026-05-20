@@ -1,8 +1,11 @@
-export default function CandidateTable({ candidates = [] }) {
+import ApplicationTable from '@/components/applications/ApplicationTable'
+
+export default function CandidateTable({ candidates = [], onStatusChange, updatingId }) {
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 className="text-lg font-semibold text-slate-800">CandidateTable</h2>
-      <p className="mt-2 text-sm text-slate-500">Implement UI here.</p>
-    </section>
+    <ApplicationTable
+      applications={candidates}
+      onStatusChange={onStatusChange}
+      updatingId={updatingId}
+    />
   )
 }

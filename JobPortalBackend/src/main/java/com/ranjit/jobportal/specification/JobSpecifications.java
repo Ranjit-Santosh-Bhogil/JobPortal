@@ -11,13 +11,14 @@ public final class JobSpecifications {
     private JobSpecifications() {
     }
 
+    // Base filter for public job browsing: only active listings are shown.
     public static Specification<Job> isActive() {
         return (root, query, cb) -> cb.isTrue(root.get("active"));
     }
 
     public static Specification<Job> titleOrDescriptionContains(String q) {
         if (q == null || q.isBlank()) {
-            return null;
+            return alwaysTrue();
         }
         String pattern = "%" + q.toLowerCase() + "%";
         return (root, query, cb) -> cb.or(
@@ -29,7 +30,7 @@ public final class JobSpecifications {
 
     public static Specification<Job> locationContains(String location) {
         if (location == null || location.isBlank()) {
-            return null;
+            return alwaysTrue();
         }
         String pattern = "%" + location.toLowerCase() + "%";
         return (root, query, cb) -> cb.like(cb.lower(root.get("location")), pattern);
@@ -37,15 +38,19 @@ public final class JobSpecifications {
 
     public static Specification<Job> hasJobType(JobType jobType) {
         if (jobType == null) {
-            return null;
+            return alwaysTrue();
         }
         return (root, query, cb) -> cb.equal(root.get("jobType"), jobType);
     }
 
     public static Specification<Job> minSalaryAtLeast(BigDecimal minSalary) {
         if (minSalary == null) {
-            return null;
+            return alwaysTrue();
         }
         return (root, query, cb) -> cb.greaterThanOrEqualTo(root.get("minSalary"), minSalary);
+    }
+
+    private static Specification<Job> alwaysTrue() {
+        return (root, query, cb) -> cb.conjunction();
     }
 }

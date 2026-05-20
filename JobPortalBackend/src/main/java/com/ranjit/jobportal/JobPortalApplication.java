@@ -12,12 +12,14 @@ import java.util.Properties;
 public class JobPortalApplication {
 
     public static void main(String[] args) {
+        // Prepare PostgreSQL before Spring creates the datasource.
         ensureDatabaseFromConfig();
         SpringApplication.run(JobPortalApplication.class, args);
     }
 
     private static void ensureDatabaseFromConfig() {
         try {
+            // Read the same datasource values that Spring Boot will use at runtime.
             Properties properties = new Properties();
             try (InputStream input = new ClassPathResource("application.properties").getInputStream()) {
                 properties.load(input);

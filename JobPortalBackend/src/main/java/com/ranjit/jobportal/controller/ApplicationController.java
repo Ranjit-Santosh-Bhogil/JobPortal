@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ApplicationController {
 
+    // Connects candidates to jobs and lets recruiters move applications through statuses.
     private final ApplicationService applicationService;
 
     @PostMapping("/jobs/{jobId}/apply")

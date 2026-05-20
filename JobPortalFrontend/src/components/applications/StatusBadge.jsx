@@ -1,8 +1,21 @@
-export default function StatusBadge({ status }) {
+const STATUS_STYLES = {
+  PENDING: 'bg-amber-50 text-amber-700 ring-amber-200',
+  REVIEWING: 'bg-sky-50 text-sky-700 ring-sky-200',
+  SHORTLISTED: 'bg-indigo-50 text-indigo-700 ring-indigo-200',
+  REJECTED: 'bg-rose-50 text-rose-700 ring-rose-200',
+  HIRED: 'bg-emerald-50 text-emerald-700 ring-emerald-200',
+}
+
+export default function StatusBadge({ status = 'PENDING' }) {
+  const label = String(status).replaceAll('_', ' ').toLowerCase()
+
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 className="text-lg font-semibold text-slate-800">StatusBadge</h2>
-      <p className="mt-2 text-sm text-slate-500">Implement UI here.</p>
-    </section>
+    <span
+      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold capitalize ring-1 ${
+        STATUS_STYLES[status] ?? 'bg-slate-50 text-slate-700 ring-slate-200'
+      }`}
+    >
+      {label}
+    </span>
   )
 }

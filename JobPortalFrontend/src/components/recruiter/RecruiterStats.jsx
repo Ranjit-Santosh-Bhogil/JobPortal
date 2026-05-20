@@ -1,8 +1,13 @@
+import StatCard from '@/components/common/StatCard'
+import '@/styles/dashboard.css'
+
 export default function RecruiterStats({ stats }) {
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 className="text-lg font-semibold text-slate-800">RecruiterStats</h2>
-      <p className="mt-2 text-sm text-slate-500">Implement UI here.</p>
-    </section>
+    <div className="dashboard-grid">
+      <StatCard label="Jobs" value={stats?.totalJobs ?? 0} />
+      <StatCard label="Applications" value={stats?.totalApplications ?? 0} />
+      <StatCard label="Pending" value={stats?.pendingApplications ?? 0} />
+      <StatCard label="Users" value={stats?.totalUsers ?? 0} />
+    </div>
   )
 }

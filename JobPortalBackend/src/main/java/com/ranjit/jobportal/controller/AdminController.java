@@ -20,6 +20,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AdminController {
 
+    // Platform-level stats, users, status moderation, and reports.
     private final AdminService adminService;
 
     @GetMapping("/stats")
